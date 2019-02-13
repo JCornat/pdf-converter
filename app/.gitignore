@@ -1,0 +1,59 @@
+# Development folder
+.sass-cache
+
+# Dependencies
+node_modules
+
+# Config
+config/*
+!config/*.default
+!config/index.ts
+
+# Tmp
+tmp/*
+!tmp/.gitkeep
+
+# Logs
+log/*
+!log/.gitkeep
+
+# Tmp
+tmp/*
+!tmp/.gitkeep
+
+# SSH Keys
+ssh/*
+!ssh/.gitkeep
+
+#TypeScript generation
+app.js
+app.js.map
+
+class/*.js
+class/*.js.map
+
+controller/*.js
+controller/*.js.map
+
+enum/*.js
+enum/*.js.map
+
+middleware/*.js
+middleware/*.js.map
+
+model/*.js
+model/*.js.map
+
+test/*.js
+test/*.js.map
+
+# Public files
+public/*
+public/pdf/*
+!public/pdf
+!public/pdf/.gitkeep
+!public/assets
+
+# Private PDF files
+private/pdf/*
+!private/pdf/.gitkeep

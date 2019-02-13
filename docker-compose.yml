@@ -1,0 +1,19 @@
+version: '3'
+services:
+    web:
+        build:
+            context: ./app
+            args:
+                - image=${WEB_IMAGE}
+        container_name: ${WEB_CONTAINER_NAME}
+        volumes:
+            - ./app:/src
+            - /src/node_modules
+        environment:
+            - TZ=Europe/Paris
+        ports:
+            - '${WEB_PORT}:3045'
+networks:
+    default:
+        external:
+            name: main

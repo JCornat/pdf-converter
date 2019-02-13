@@ -1,0 +1,5 @@
+# Development folder
+.idea
+
+# Configuration file
+.env
