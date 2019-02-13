@@ -1,24 +1,24 @@
+import * as fs from 'fs';
 import * as moment from 'moment';
 import * as path from 'path';
 import * as puppeteer from 'puppeteer';
 
 import { URL } from '../config/config';
-import * as fs from "fs";
 
 export function randomInteger(min: number = 100000, max: number = 999999) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
 export async function convertHtmlContentToPDF(content: string): Promise<string> {
-  const currentDate = moment().format('MMDDHHMMSSS');
-  const random = randomInteger();
-  const title = `${currentDate}-${random}.pdf`;
-  const destination = path.join(__dirname, '..', 'public', 'pdf', title)
-
-  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']})
-  const page = await browser.newPage()
+  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+  const page = await browser.newPage();
 
   await page.setContent(content);
+
+  const currentDate = moment().format('MMDDHHmmsss');
+  const random = randomInteger();
+  const title = `${currentDate}-${random}.pdf`;
+  const destination = path.join(__dirname, '..', 'public', 'pdf', title);
 
   const options = {
     path: destination,
@@ -36,7 +36,6 @@ export async function cleaner(): Promise<any> {
   try {
     const WHITELIST = ['.gitkeep'];
     const directory = path.join(__dirname, '..', 'public', 'pdf');
-
     const files = fs.readdirSync(directory);
 
     for (const file of files) {
@@ -46,7 +45,6 @@ export async function cleaner(): Promise<any> {
       }
 
       const stat = fs.statSync(fileUrl);
-
       const createdAt = moment(stat.ctime);
       if (moment().diff(createdAt, 'hours') > 1) {
         fs.unlinkSync(fileUrl);
