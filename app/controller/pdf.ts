@@ -4,7 +4,7 @@ import * as PDF from '../model/pdf';
 
 export function init(app: Application): void {
   app.get('/api/convert', async (req: any, res: any, next: any) => {
-    const html = req.params.html;
+    const html = req.query.html;
 
     try {
       const data = await PDF.convertHtmlContentToPDF(html);
