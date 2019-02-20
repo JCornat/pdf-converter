@@ -1,4 +1,4 @@
-# thoth-c7z
+# cerberus-c7z
 
 Based on Puppeteer, convert HTML content to PDF via API.
 
