@@ -9,6 +9,9 @@ import * as PostMiddleware from './middleware/post';
 import * as SecurityMiddleware from './middleware/security';
 
 import * as PDFController from './controller/pdf';
+import * as TestController from './controller/test';
+
+import * as TestModel from './model/test';
 
 export let app = express();
 
@@ -28,6 +31,7 @@ async function init() {
   // Controllers
   try {
     PDFController.init(app);
+    TestController.init(app);
   } catch (error) {
     console.error('Controllers init fail', error);
   }
@@ -38,6 +42,9 @@ async function init() {
   } catch (error) {
     console.error('Middlewares init fail', error);
   }
+
+  // testPatient();
+  TestModel.init();
 
   // Listening
   app.listen(PORT);

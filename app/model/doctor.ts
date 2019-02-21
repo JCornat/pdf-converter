@@ -2,10 +2,10 @@ import * as puppeteer from 'puppeteer';
 import * as moment from 'moment';
 import * as path from 'path';
 
-import { URL, PATIENT } from '../config/config';
+import { URL, DOCTOR } from '../config/config';
 
 export async function test(): Promise<void> {
-  console.log('--- PATIENT ---');
+  console.log('--- DOCTOR ---');
 
   try {
     const browser = await puppeteer.launch();
@@ -14,8 +14,10 @@ export async function test(): Promise<void> {
     const pages = [
       'start',
       'login',
+      // 'passcode',
       'results',
       'resultAnalyse',
+      'resultPatient',
     ];
 
     for (const item of pages) {
@@ -24,8 +26,8 @@ export async function test(): Promise<void> {
         const currentDate = moment();
         await page.waitFor(1000);
         const nameFile = `${currentDate.format('YYYYMMDDHHmmssSSS')}.png`;
-        const pathFile = path.join(__dirname, '..', 'test', 'patient', nameFile);
-        // await page.screenshot({ path: pathFile });
+        const pathFile = path.join(__dirname, '..', 'test', 'doctor', nameFile);
+        await page.screenshot({ path: pathFile });
         console.log(item, 'OK');
       } catch (error) {
         console.error(item, 'ERROR', error);
@@ -34,7 +36,7 @@ export async function test(): Promise<void> {
 
     await browser.close();
   } catch (error) {
-    console.log('--- PATIENT ERROR ---');
+    console.log('--- DOCTOR ERROR ---');
     console.error(error);
   }
 }
@@ -46,17 +48,29 @@ async function start(page: any): Promise<any> {
 }
 
 async function login(page: any): Promise<void> {
-  await page.type('#username', PATIENT.login);
-  await page.type('#password', PATIENT.password);
+  await page.type('#username', DOCTOR.login);
+  await page.type('#password', DOCTOR.password);
   page.click('button.c7z-button');
   await page.waitForNavigation();
 }
 
+// async function passcode(page: any): Promise<void> {
+//   await page.type('#passcode', DOCTOR.passcode);
+//   page.click('button.c7z-button');
+//   await page.waitForNavigation();
+// }
+
 async function results(page: any): Promise<void> {
-  page.click('patient-result-item > .row');
+  page.click('shared-result-item > .row');
   await page.waitForNavigation();
 }
 
 async function resultAnalyse(page: any): Promise<void> {
   page.click('result-analyse > div > .row');
 }
+
+async function resultPatient(page: any): Promise<void> {
+  page.click('button.c7z-button');
+  await page.waitForNavigation();
+}
+
