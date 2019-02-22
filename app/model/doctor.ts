@@ -15,9 +15,11 @@ export async function test(): Promise<void> {
       'start',
       'login',
       // 'passcode',
-      'results',
-      'resultAnalyse',
-      'resultPatient',
+      // 'results',
+      // 'resultAnalyse',
+      // 'resultPatient',
+      'sharedResultAnalyse',
+      'sharedResultAnalyse',
     ];
 
     for (const item of pages) {
@@ -73,4 +75,15 @@ async function resultPatient(page: any): Promise<void> {
   page.click('button.c7z-button');
   await page.waitForNavigation();
 }
+
+async function sharedResults(page: any): Promise<void> {
+  const a = await page.$eval('i.material-icons-share', (element) => element.className);
+  await page.waitForNavigation();
+}
+
+async function sharedResultAnalyse(page: any): Promise<void> {
+  page.click('shared-result-item > .row');
+  await page.waitForNavigation();
+}
+
 

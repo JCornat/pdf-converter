@@ -25,7 +25,7 @@ export async function test(): Promise<void> {
         await page.waitFor(1000);
         const nameFile = `${currentDate.format('YYYYMMDDHHmmssSSS')}.png`;
         const pathFile = path.join(__dirname, '..', 'test', 'patient', nameFile);
-        // await page.screenshot({ path: pathFile });
+        await page.screenshot({ path: pathFile });
         console.log(item, 'OK');
       } catch (error) {
         console.error(item, 'ERROR', error);
