@@ -6,9 +6,18 @@ services:
             args:
                 - image=${WEB_IMAGE}
         container_name: ${WEB_CONTAINER_NAME}
+        restart: always
         volumes:
-            - ./app:/src
-            - /src/node_modules
+            - ./app/config:/src/config
+            - ./app/connector:/src/connector
+            - ./app/controller:/src/controller
+            - ./app/log:/src/log
+            - ./app/middleware:/src/middleware
+            - ./app/model:/src/model
+            - ./app/public:/src/public
+            - ./app/app.ts:/src/app.ts
+            - ./app/tsconfig.json:/src/tsconfig.json
+            - ${WWW_DIRECTORY}:/src/www
         environment:
             - TZ=Europe/Paris
 networks:
