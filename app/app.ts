@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import { MODE, PORT } from './config/config';
+import { MODE, PORT, URL } from './config/config';
 
 import * as AssetMiddleware from './middleware/asset';
 import * as CronMiddleware from './middleware/cron';
