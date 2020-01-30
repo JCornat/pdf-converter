@@ -11,8 +11,6 @@ services:
             - /src/node_modules
         environment:
             - TZ=Europe/Paris
-        ports:
-            - '${WEB_PORT}:3045'
 networks:
     default:
         external:
