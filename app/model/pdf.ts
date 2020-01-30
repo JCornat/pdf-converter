@@ -1,9 +1,9 @@
-import * as fs from 'fs';
 import * as moment from 'moment';
 import * as path from 'path';
 import * as puppeteer from 'puppeteer';
 
 import { URL } from '../config/config';
+import * as Directory from './directory';
 
 export function randomInteger(min: number = 100000, max: number = 999999) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -34,22 +34,14 @@ export async function convertHtmlContentToPDF(content: string): Promise<string> 
 
 export async function cleaner(): Promise<any> {
   try {
-    const WHITELIST = ['.gitkeep'];
-    const directory = path.join(__dirname, '..', 'public', 'pdf');
-    const files = fs.readdirSync(directory);
+    const options = {
+      directory: path.join(__dirname, '..', 'public', 'pdf'),
+      timeUnit: 'hours',
+      timeValue: 1,
+      whitelist: ['.gitkeep'],
+    };
 
-    for (const file of files) {
-      const fileUrl = path.join(directory, file);
-      if (WHITELIST.indexOf(file) >= 0) {
-        continue;
-      }
-
-      const stat = fs.statSync(fileUrl);
-      const createdAt = moment(stat.ctime);
-      if (moment().diff(createdAt, 'hours') > 1) {
-        fs.unlinkSync(fileUrl);
-      }
-    }
+    await Directory.removeOldFiles(options);
   } catch (error) {
     console.error('error cron', 'cleaner', error);
   }
