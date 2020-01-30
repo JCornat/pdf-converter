@@ -17,7 +17,6 @@ services:
             - ./app/public:/src/public
             - ./app/app.ts:/src/app.ts
             - ./app/tsconfig.json:/src/tsconfig.json
-            - ${WWW_DIRECTORY}:/src/www
         environment:
             - TZ=Europe/Paris
 networks:
