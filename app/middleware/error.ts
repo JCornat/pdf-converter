@@ -1,10 +1,7 @@
 import { Application } from 'express';
-import * as Log from 'node-logger-c7z';
 
 export function init(app: Application): void {
   app.use(async (error: any, req: any, res: any, next: any): Promise<any> => {
-    Log.error(error);
-
     if (!isNaN(error)) {
       res.sendStatus(error);
       return next();

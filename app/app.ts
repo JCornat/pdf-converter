@@ -3,6 +3,7 @@ import * as express from 'express';
 import { MODE, PORT } from './config/config';
 
 import * as AssetMiddleware from './middleware/asset';
+import * as CronMiddleware from './middleware/cron';
 import * as ErrorMiddleware from './middleware/error';
 import * as LogMiddleware from './middleware/log';
 import * as PostMiddleware from './middleware/post';
@@ -15,7 +16,6 @@ export let app = express();
 init();
 
 async function init() {
-  // Middlewares
   try {
     SecurityMiddleware.init(app);
     PostMiddleware.init(app);
@@ -25,7 +25,6 @@ async function init() {
     console.error('Middlewares init fail', error);
   }
 
-  // Controllers
   try {
     PDFController.init(app);
   } catch (error) {
@@ -33,13 +32,18 @@ async function init() {
   }
 
   try {
+    CronMiddleware.init();
+  } catch (error) {
+    console.error('CRON init fail', error);
+  }
+
+  try {
     ErrorMiddleware.init(app);
-    LogMiddleware.result(app);
   } catch (error) {
     console.error('Middlewares init fail', error);
   }
 
-  // Listening
   app.listen(PORT);
-  console.log(`Server running in ${MODE} mode`);
+  console.log(`Server running in ${MODE} mode on port ${PORT} on address ${URL}`);
+  app.emit('initialized');
 }
