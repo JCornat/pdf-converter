@@ -26,7 +26,7 @@ export async function removeOldFiles(options: { directory: string, whitelist?: s
       const stat = fs.statSync(fileUrl);
 
       const createdAt = moment(stat.ctime);
-      if (currentDate.diff(createdAt, options.timeUnit) > options.timeValue) {
+      if (currentDate.diff(createdAt, options.timeUnit, true) > options.timeValue) {
         fs.unlinkSync(fileUrl);
       }
     }
