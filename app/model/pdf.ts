@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import * as path from 'path';
-import * as puppeteer from 'puppeteer';
+import * as fs from 'fs';
+import { chromium } from 'playwright';
 
 import { URL } from '../config/config';
 import * as Directory from './directory';
@@ -15,7 +16,7 @@ export async function convertHtmlContentToPDF(options: { content: string, header
     throw {status: 400, message: `Empty content cannot be empty`};
   }
 
-  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+  const browser = await chromium.launch();
   const page = await browser.newPage();
 
   await page.setContent(options.content);
