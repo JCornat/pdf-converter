@@ -1,28 +1,21 @@
-import { Application } from 'express';
+import { Request, Response } from 'express';
 
-export function init(app: Application): void {
-  app.use(async (error: any, req: any, res: any, next: any): Promise<any> => {
-    if (!isNaN(error)) {
-      res.sendStatus(error);
-      return next();
-    }
+export function handle(error: any, req: Request, res: Response, next: any): any {
+  if (!isNaN(error)) {
+    return res.sendStatus(error);
+  }
 
-    if (!isNaN(error.message)) {
-      res.sendStatus(error.message);
-      return next();
-    }
+  if (!isNaN(error.message)) {
+    return res.sendStatus(error.message);
+  }
 
-    if (error.name === 'TokenExpiredError') {
-      res.sendStatus(401);
-      return next();
-    }
+  if (error.name === 'TokenExpiredError') {
+    return res.sendStatus(401);
+  }
 
-    if (error.status) {
-      res.status(error.status).send(error.message);
-      return next();
-    }
+  if (error.status) {
+    return res.status(error.status).send(error.message);
+  }
 
-    res.status(500).send(error);
-    return next();
-  });
+  res.status(500).send(error);
 }

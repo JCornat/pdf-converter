@@ -11,7 +11,7 @@ export function randomInteger(min: number = 100000, max: number = 999999) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-export async function convertHtmlContentToPDF(options: { content: string, headerTemplate?: string, footerTemplate?: string, style?: string, format?: string, landscape?: boolean, disableResetCSS?: boolean, width?: string | number, height?: string | number, margin?: { top?: number, left?: number, right?: number, bottom?: number } }): Promise<string> {
+export async function convertHtmlContentToPDF(options: { content: string, headerTemplate?: string, footerTemplate?: string, style?: string, format?: string, landscape?: boolean, disableResetCSS?: boolean, width?: string | number, height?: string | number, margin?: { top?: string | number, left?: string | number, right?: string | number, bottom?: string | number } }): Promise<string> {
   if (Global.isEmpty(options?.content)) {
     throw {status: 400, message: `Empty content cannot be empty`};
   }

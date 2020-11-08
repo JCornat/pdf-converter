@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as http from 'http';
 
 import { MODE, PORT, URL } from './config/config';
 
@@ -10,40 +11,28 @@ import * as PostMiddleware from './middleware/post';
 import * as SecurityMiddleware from './middleware/security';
 
 import * as PDFController from './controller/pdf';
+import * as NotFoundController from './controller/not-found';
 
 export let app = express();
+const server = http.createServer(app);
 
 init();
 
 async function init() {
-  try {
-    SecurityMiddleware.init(app);
-    PostMiddleware.init(app);
-    AssetMiddleware.init(app);
-    LogMiddleware.init();
-  } catch (error) {
-    console.error('Middlewares init fail', error);
-  }
+  app.use(SecurityMiddleware.app);
+  app.use(PostMiddleware.app);
+  app.use(AssetMiddleware.app);
+  LogMiddleware.init();
 
-  try {
-    PDFController.init(app);
-  } catch (error) {
-    console.error('Controllers init fail', error);
-  }
+  CronMiddleware.init();
 
-  try {
-    CronMiddleware.init();
-  } catch (error) {
-    console.error('CRON init fail', error);
-  }
+  app.use(PDFController.router);
+  app.use(NotFoundController.router);
 
-  try {
-    ErrorMiddleware.init(app);
-  } catch (error) {
-    console.error('Middlewares init fail', error);
-  }
+  app.use(ErrorMiddleware.handle);
 
   app.listen(PORT);
+  server.listen(PORT);
   console.log(`Server running in ${MODE} mode on port ${PORT} on address ${URL}`);
   app.emit('initialized');
 }
