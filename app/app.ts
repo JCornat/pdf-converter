@@ -31,7 +31,6 @@ async function init() {
 
   app.use(ErrorMiddleware.handle);
 
-  app.listen(PORT);
   server.listen(PORT);
   console.log(`Server running in ${MODE} mode on port ${PORT} on address ${URL}`);
   app.emit('initialized');

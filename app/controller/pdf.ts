@@ -44,8 +44,6 @@ router.get('/api/convert', async (req: Request, res: Response, next: any) => {
   } catch (error) {
     return next(error);
   }
-
-  next();
 });
 
 router.post('/api/convert', async (req: Request, res: Response, next: any) => {
@@ -88,6 +86,4 @@ router.post('/api/convert', async (req: Request, res: Response, next: any) => {
   } catch (error) {
     return next(error);
   }
-
-  next();
 });
