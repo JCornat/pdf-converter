@@ -37,8 +37,8 @@ export async function convertHtmlContentToPDF(options: { content: string, header
   const defaultCSS = fs.readFileSync(path.join(__dirname, '..', 'private', 'default.css'), 'utf-8');
   const headerCSS = fs.readFileSync(path.join(__dirname, '..', 'private', 'header.css'), 'utf-8');
 
-  let headerTemplate: string;
-  let footerTemplate: string;
+  let headerTemplate: string = ' ';
+  let footerTemplate: string = ' ';
   const displayHeaderFooter = (Global.isPopulated(options.headerTemplate) || Global.isPopulated(options.footerTemplate));
   if (displayHeaderFooter) {
     const headerFooterCSS = `
