@@ -9,11 +9,11 @@ services:
         restart: always
         volumes:
             - ./app/config:/src/config
-            - ./app/connector:/src/connector
             - ./app/controller:/src/controller
             - ./app/log:/src/log
             - ./app/middleware:/src/middleware
             - ./app/model:/src/model
+            - ./app/private:/src/private
             - ./app/public:/src/public
             - ./app/app.ts:/src/app.ts
             - ./app/tsconfig.json:/src/tsconfig.json
