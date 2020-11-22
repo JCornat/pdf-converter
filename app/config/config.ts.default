@@ -1,0 +1,4 @@
+export const MODE: 'development' | 'production' = process.env.NODE_ENV as 'development' | 'production' || 'development';
+export const PORT: number = 3000;
+export const URL: string = `https://myserver.com`;
+export const ENABLE_CRON: boolean = false;
