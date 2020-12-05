@@ -7,6 +7,8 @@ services:
                 - image=${WEB_IMAGE}
         container_name: ${WEB_CONTAINER_NAME}
         restart: always
+        ports:
+            - '${WEB_PORT}:3000'
         volumes:
             - ./app/config:/src/config
             - ./app/controller:/src/controller
