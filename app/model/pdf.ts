@@ -11,7 +11,7 @@ export function randomInteger(min: number = 100000, max: number = 999999) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-export async function convertHtmlContentToPDF(options: { content: string, headerTemplate?: string, footerTemplate?: string, style?: string, format?: string, landscape?: boolean, disableResetCSS?: boolean, width?: string | number, height?: string | number, margin?: { top?: string | number, left?: string | number, right?: string | number, bottom?: string | number } }): Promise<string> {
+export async function convertHtmlContentToPDF(options: { content: string, headerTemplate?: string, footerTemplate?: string, style?: string, format?: string, landscape?: boolean, width?: string | number, height?: string | number, margin?: { top?: string | number, left?: string | number, right?: string | number, bottom?: string | number } }): Promise<string> {
   if (Global.isEmpty(options?.content)) {
     throw {status: 400, message: `Empty content cannot be empty`};
   }
@@ -83,9 +83,7 @@ export async function convertHtmlContentToPDF(options: { content: string, header
     footerTemplate,
   };
 
-  if (Global.isEmpty(options.disableResetCSS)) {
-    await page.addStyleTag({content: `${resetCSS}${defaultCSS}`});
-  }
+  await page.addStyleTag({content: `${resetCSS}${defaultCSS}`});
 
   if (Global.isPopulated(options.style)) {
     await page.addStyleTag({content: options.style});

@@ -11,7 +11,6 @@ router.get('/api/convert', async (req: Request, res: Response, next: any) => {
   const style = req.query.style as string;
   const format = req.query.format as string;
   const landscape = (req.query.landscape as string === 'true');
-  const disableResetCSS = (req.query.disableResetCSS as string === 'true');
   const width = req.query.width as string;
   const height = req.query.height as string;
   const marginTop = req.query.marginTop as string;
@@ -32,7 +31,6 @@ router.get('/api/convert', async (req: Request, res: Response, next: any) => {
     style,
     format,
     landscape,
-    disableResetCSS,
     width,
     height,
     margin,
@@ -53,7 +51,6 @@ router.post('/api/convert', async (req: Request, res: Response, next: any) => {
   const style = req.body.style;
   const format = req.body.format;
   const landscape = (req.body.landscape === 'true');
-  const disableResetCSS = (req.body.disableResetCSS === 'true');
   const width = req.body.width;
   const height = req.body.height;
   const marginTop = req.body.marginTop;
@@ -74,7 +71,6 @@ router.post('/api/convert', async (req: Request, res: Response, next: any) => {
     style,
     format,
     landscape,
-    disableResetCSS,
     width,
     height,
     margin,

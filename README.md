@@ -33,7 +33,12 @@ Same as marginTop option
 
 ##### `headerTemplate` \<string | number\>
 HTML template, ie: `<div style="margin-left: 20px">header</div>`.  
-Header template is not affected by content margin, so you have to specify it inside your HTML  
+
+**Be careful** :  
+- Header template is not affected by content margin, so you have to specify it inside your HTML.
+- Image `src` tag in header template must be a _Base64_, it can't be a `http(s)://` link  
+- For obscure reasons, header template is kinda "zoomed in", so you may have to lower font-sizes/widths/heights/margins/paddings values (ie: font-size: 11px -> font-size: 8px)
+
 Add tag with following classes to put content inside :  
 - date : formatted print date
 - title : document title
@@ -52,10 +57,6 @@ Same as headerTemplate option
 
 ##### `style` \<string\>
 CSS rules
-
-##### `disableResetCSS` <'true'>
-Reset CSS is applied by default for header, body and footer.  
-You can disable it with `'true'` string.
 
 ##### `landscape` <'true'>
 Specify PDF orientation, by default it is portrait.  
