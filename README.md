@@ -36,8 +36,8 @@ HTML template, ie: `<div style="margin-left: 20px">header</div>`.
 
 **Be careful** :  
 - Header template is not affected by content margin, so you have to specify it inside your HTML.
-- Image `src` tag in header template must be a _Base64_, it can't be a `http(s)://` link  
-- For obscure reasons, header template is kinda "zoomed in", so you may have to lower font-sizes/widths/heights/margins/paddings values (ie: font-size: 11px -> font-size: 8px)
+- Image `src` tag in header template must be a _Base64_, it can't be a `http(s)://` link  (see [issue](https://github.com/puppeteer/puppeteer/issues/2443))
+- Header template is kinda "zoomed in", so you may have to lower font-sizes/widths/heights/margins/paddings values (ie: font-size: 11px -> font-size: 8px) (see [issue](https://github.com/puppeteer/puppeteer/issues/2104))
 
 Add tag with following classes to put content inside :  
 - date : formatted print date
