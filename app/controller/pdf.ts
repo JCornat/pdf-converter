@@ -13,11 +13,11 @@ router.get('/api/convert', async (req: Request, res: Response, next: any) => {
   const landscape = (req.query.landscape as string === 'true');
   const width = req.query.width as string;
   const height = req.query.height as string;
+  const filename = req.query.filename as string;
   const marginTop = req.query.marginTop as string;
   const marginLeft = req.query.marginLeft as string;
   const marginRight = req.query.marginRight as string;
   const marginBottom = req.query.marginBottom as string;
-  const filename = req.query.filename as string;
   const margin = {
     top: marginTop,
     left: marginLeft,
@@ -55,6 +55,7 @@ router.post('/api/convert', async (req: Request, res: Response, next: any) => {
   const landscape = (req.body.landscape === 'true');
   const width = req.body.width;
   const height = req.body.height;
+  const filename = req.body.filename;
   const marginTop = req.body.marginTop;
   const marginLeft = req.body.marginLeft;
   const marginRight = req.body.marginRight;
@@ -76,6 +77,7 @@ router.post('/api/convert', async (req: Request, res: Response, next: any) => {
     width,
     height,
     margin,
+    filename,
   };
 
   try {
