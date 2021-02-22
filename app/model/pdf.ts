@@ -23,7 +23,7 @@ export async function convertHtmlContentToPDF(options: { content: string, header
 
   let title: string;
   if (options.filename) {
-    title = options.filename;
+    title = `${options.filename.replace(/[^a-zA-Z0-9-_]/g, '')}.pdf`;
   } else {
     const currentDate = moment().format('MMDDHHmmsss');
     const random = randomInteger();
