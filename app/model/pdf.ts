@@ -11,7 +11,7 @@ export function randomInteger(min: number = 100000, max: number = 999999) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-export async function convertHtmlContentToPDF(options: { content: string, headerTemplate?: string, footerTemplate?: string, style?: string, format?: string, landscape?: boolean, width?: string | number, height?: string | number, margin?: { top?: string | number, left?: string | number, right?: string | number, bottom?: string | number } }): Promise<string> {
+export async function convertHtmlContentToPDF(options: { content: string, headerTemplate?: string, footerTemplate?: string, style?: string, format?: string, landscape?: boolean, width?: string | number, height?: string | number, margin?: { top?: string | number, left?: string | number, right?: string | number, bottom?: string | number }, filename?: string }): Promise<string> {
   if (Global.isEmpty(options?.content)) {
     throw {status: 400, message: `Empty content cannot be empty`};
   }
@@ -21,9 +21,15 @@ export async function convertHtmlContentToPDF(options: { content: string, header
 
   await page.setContent(options.content);
 
-  const currentDate = moment().format('MMDDHHmmsss');
-  const random = randomInteger();
-  const title = `${currentDate}-${random}.pdf`;
+  let title: string;
+  if (options.filename) {
+    title = options.filename;
+  } else {
+    const currentDate = moment().format('MMDDHHmmsss');
+    const random = randomInteger();
+    title = `${currentDate}-${random}.pdf`;
+  }
+
   const destination = path.join(__dirname, '..', 'public', 'pdf', title);
 
   const margin = {

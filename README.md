@@ -85,6 +85,8 @@ Values :
 - `A5` (5.83in x 8.27in)
 - `A6` (4.13in x 5.83in)
 
+##### `filename` \<string\>
+Specify your own filename. PDF with same filenames will be overwritten. By default, it will be a unique generated name.
 
 ## Production
 

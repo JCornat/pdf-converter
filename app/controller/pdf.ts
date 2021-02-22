@@ -17,6 +17,7 @@ router.get('/api/convert', async (req: Request, res: Response, next: any) => {
   const marginLeft = req.query.marginLeft as string;
   const marginRight = req.query.marginRight as string;
   const marginBottom = req.query.marginBottom as string;
+  const filename = req.query.filename as string;
   const margin = {
     top: marginTop,
     left: marginLeft,
@@ -34,6 +35,7 @@ router.get('/api/convert', async (req: Request, res: Response, next: any) => {
     width,
     height,
     margin,
+    filename,
   };
 
   try {
