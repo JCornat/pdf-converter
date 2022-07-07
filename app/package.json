@@ -8,7 +8,7 @@
     "cron": "1.8.2",
     "express": "4.17.1",
     "helmet": "4.6.0",
-    "moment": "2.29.1",
+    "moment": "2.29.4",
     "node-logger-c7z": "0.2.4",
     "playwright": "1.13.1",
     "request": "2.88.2"
