@@ -18,7 +18,7 @@ const server = http.createServer(app);
 
 init();
 
-async function init() {
+async function init(): Promise<void> {
   app.use(SecurityMiddleware.app);
   app.use(PostMiddleware.app);
   app.use(AssetMiddleware.app);
