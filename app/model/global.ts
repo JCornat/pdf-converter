@@ -31,19 +31,19 @@ export function capitalize(arg: string): string {
  * Ex: For data = [{a: 1}, {b: 2}] and property = 'a', this will return [1]
  * Ex: For data = [{a: {b: {c: 'hello'}}}] and property = ['a', 'b', 'c'], this will return ['hello']
  */
-export function extract(data: any[], property: string | number | string[] | number[]): any[] {
+export function extract<T>(data: T[], property: string | number | string[] | number[]): any[] {
   if (!data || isEmpty(data)) {
     return [];
   }
 
-  const res = {};
+  const res: { [key: string]: any } = {};
   for (const item of data) {
     if (Array.isArray(property)) {
       if (isEmpty(item)) {
         continue;
       }
 
-      let value = item;
+      let value: any = item;
       for (let i = 0; i < property.length; i++) {
         const tmp = property[i];
 
@@ -74,7 +74,7 @@ export function extract(data: any[], property: string | number | string[] | numb
  *
  * Ex: ([{a: 100, b: 200, c:300}], {a: 'aa', b: 'bb'}) will return {aa: 100, bb: 200}
  */
-export function mapping(data: any[], property: any): any[] {
+export function mapping<T>(data: T[], property: { [key: string]: string }): any[] {
   if (!data || isEmpty(data)) {
     return [];
   }
@@ -112,19 +112,21 @@ export function mapping(data: any[], property: any): any[] {
  * Ex: (2) will return false
  * Ex: (2.1) will return false
  */
-export function isEmpty(arg: any): boolean {
+export function isEmpty<T>(arg: T): boolean {
   if (typeof arg === 'undefined') {
     return true;
   } else if (typeof arg === 'string') {
     return (arg) ? !arg.trim() : true;
   } else if (typeof arg === 'number') {
-    return false;
+    return Number.isNaN(arg);
   } else if (typeof arg === 'boolean') {
     return false;
   } else if (Array.isArray(arg)) {
     return (!arg || arg.length === 0);
   } else if (arg instanceof Date) {
     return false;
+  } else if (arg instanceof Map || arg instanceof Set) {
+    return (arg.size === 0);
   } else if (arg && typeof arg === 'object') {
     return (Object.getOwnPropertyNames(arg).length === 0);
   } else if (arg === null) {
@@ -139,7 +141,7 @@ export function isEmpty(arg: any): boolean {
  * Return true if property is not "empty"
  * Contrary of "isEmpty" function
  */
-export function isPopulated(arg: any): boolean {
+export function isPopulated<T>(arg: T): boolean {
   return !isEmpty(arg);
 }
 
@@ -152,16 +154,16 @@ export function isPopulated(arg: any): boolean {
  * Ex: (NaN) will return true
  * Ex: ('hello') will return true
  */
-export function isNaN(arg: any): boolean {
+export function isNaN<T>(arg: T): boolean {
   if (typeof arg === 'undefined') {
     return true;
   } else if (typeof arg === 'string') {
-    arg = arg.trim();
-    if (arg === '') {
+    const tmp = arg.trim();
+    if (tmp === '') {
       return true;
     }
 
-    return Number.isNaN(+arg);
+    return Number.isNaN(+tmp);
   } else if (typeof arg === 'number') {
     return Number.isNaN(arg);
   } else if (typeof arg === 'boolean') {
@@ -180,7 +182,7 @@ export function isNaN(arg: any): boolean {
   }
 }
 
-export function isNumber(arg: any): boolean {
+export function isNumber<T>(arg: T): boolean {
   return !isNaN(arg);
 }
 
@@ -191,7 +193,7 @@ export function isNumber(arg: any): boolean {
  * If multiples keys, keys will be joined by a "-"
  * Ex: ([{a: 100, b: 200, c:300}], 'a', 'b') will return {'100-200':{a: 100, b: 200, c:300}}
  */
-export function arrayToObject(data: any, ...keys: string[]): any {
+export function arrayToObject<T>(data: T[], ...keys: string[]): { [key: string]: T } {
   if (!data || typeof data !== 'object') {
     console.error('Argument type unexpected', data);
     throw new Error('Argument type unexpected');
@@ -199,6 +201,7 @@ export function arrayToObject(data: any, ...keys: string[]): any {
 
   const res = {};
 
+  // @ts-ignore
   for (const item of data) {
     const tmp = [];
     for (const tmpKey of keys) {
@@ -229,11 +232,32 @@ export function removeAccent(data: string): string {
  *
  * Do not use on objects like functions & dates, it can be dangerous !
  */
-export function clone(data: any): any {
+export function clone<T>(data: T): T {
   return JSON.parse(JSON.stringify(data));
 }
 
-export function getEnumKeyByValue(data: any, value: any) {
+/**
+ * Return value from a nested key inside an object.
+ * If not found, return undefined;
+ */
+export function getNestedObjectKey<T>(object: T, ...keys: string[]): any {
+  if (isEmpty(object)) {
+    return;
+  }
+
+  let nested = object;
+  for (const key of keys) {
+    if (nested[key] === undefined) {
+      return;
+    }
+
+    nested = nested[key];
+  }
+
+  return nested;
+}
+
+export function getEnumKeyByValue<T>(data: T, value: any): any {
   let res;
 
   const keys = Object.keys(data);
@@ -251,22 +275,43 @@ export function getEnumKeyByValue(data: any, value: any) {
   return res;
 }
 
-export function sort(options: { data: any[], key: string, descending?: boolean }): any[] {
+export function sort<T>(options: { data: T[], key?: string, keys?: string[], descending?: boolean }): T[] {
+  const key = options.key || options.keys?.[0];
+  const key2 = options.keys?.[1];
+
   const res = clone(options.data);
   res.sort((a, b) => {
-    if (a[options.key] && a[options.key] > b[options.key]) {
+    const hasProperty = isPopulated(a[key]);
+    if (hasProperty && a[key] > b[key]) {
       return (options.descending) ? -1 : 1;
-    } else if (!a[options.key] || a[options.key] < b[options.key]) {
+    } else if (!hasProperty || a[key] < b[key]) {
       return (options.descending) ? 1 : -1;
     } else {
-      return 0;
+      if (key2) {
+        const hasProperty2 = isPopulated(a[key2]);
+        if (hasProperty2 && a[key2] > b[key2]) {
+          return (options.descending) ? -1 : 1;
+        } else if (!hasProperty2 || a[key2] < b[key2]) {
+          return (options.descending) ? 1 : -1;
+        } else {
+          return 0;
+        }
+      } else {
+        return 0;
+      }
     }
   });
 
   return res;
 }
 
-export function get(data, stringPath) {
+/*
+ Access object property via string path.
+ If the path doesn't match, it returns undefined;
+
+ Ex: get({a: {b: [{c: 1}, {c: 2}]}}, 'a.b[1].c'); // Returns 2
+*/
+export function get(data: { [key: string]: any }, stringPath: string): any {
   stringPath = stringPath.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
   stringPath = stringPath.replace(/^\./, ''); // strip a leading dot
 
@@ -281,4 +326,19 @@ export function get(data, stringPath) {
   }
 
   return data;
+}
+
+export function sleep(milliseconds: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
+export function formatText(data: string): string {
+  if (isEmpty(data)) {
+    return '';
+  }
+
+  const upperCased = data.toUpperCase();
+  const withoutAccents = removeAccent(upperCased);
+  const withoutSpecialCharacters = withoutAccents.replace(/[^a-zA-Z0-9 ]/g, ' ');
+  return withoutSpecialCharacters.trim();
 }

@@ -1,12 +1,12 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fsPromises from 'fs/promises';
 import * as moment from 'moment';
+import * as path from 'path';
 
 import * as Global from './global';
 
-export async function removeOldFiles(options: { directory: string, whitelist?: string[], timeUnit: any, timeValue: number }): Promise<any> {
+export async function removeOldFiles(options: { directory: string, whitelist?: string[], timeUnit: any, timeValue: number }): Promise<void> {
   try {
-    if (Global.isEmpty(options) || Global.isEmpty(options.directory) || Global.isEmpty(options.timeUnit) || Global.isNaN(options.timeValue)) {
+    if (Global.isEmpty(options) || Global.isEmpty(options.directory) || Global.isEmpty(options.timeUnit) || Global.isNaN(options.timeValue)) {
       throw {status: 400, message: 'Paramètres invalides'};
     }
 
@@ -14,7 +14,7 @@ export async function removeOldFiles(options: { directory: string, whitelist?: s
       options.whitelist = [];
     }
 
-    const files = fs.readdirSync(options.directory);
+    const files = await fsPromises.readdir(options.directory);
     const currentDate = moment();
 
     for (const file of files) {
@@ -23,11 +23,11 @@ export async function removeOldFiles(options: { directory: string, whitelist?: s
         continue;
       }
 
-      const stat = fs.statSync(fileUrl);
+      const stat = await fsPromises.stat(fileUrl);
 
       const createdAt = moment(stat.ctime);
       if (currentDate.diff(createdAt, options.timeUnit, true) > options.timeValue) {
-        fs.unlinkSync(fileUrl);
+        await fsPromises.unlink(fileUrl);
       }
     }
   } catch (error) {

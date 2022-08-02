@@ -1,13 +1,13 @@
+import { chromium } from 'playwright';
+import * as fs from 'fs';
 import * as moment from 'moment';
 import * as path from 'path';
-import * as fs from 'fs';
-import { chromium } from 'playwright';
 
 import { URL } from '../config/config';
 import * as Directory from './directory';
 import * as Global from './global';
 
-export function randomInteger(min: number = 100000, max: number = 999999) {
+export function randomInteger(min: number = 100000, max: number = 999999): number {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
@@ -53,7 +53,7 @@ export async function convertHtmlContentToPDF(options: { content: string, header
         ${defaultCSS}
         ${headerCSS}
       </style>
-    `
+    `;
 
     if (Global.isPopulated(options.headerTemplate)) {
       headerTemplate = `${headerFooterCSS}<header>${options.headerTemplate}</header>`;
@@ -102,7 +102,7 @@ export async function convertHtmlContentToPDF(options: { content: string, header
   return `${URL}/public/pdf/${title}`;
 }
 
-export async function cleaner(): Promise<any> {
+export async function cleaner(): Promise<void> {
   try {
     const options = {
       directory: path.join(__dirname, '..', 'public', 'pdf'),
