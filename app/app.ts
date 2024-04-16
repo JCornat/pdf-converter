@@ -1,37 +1,24 @@
-import * as express from 'express';
-import * as http from 'http';
+import { Hono } from 'hono';
+import { Context } from 'hono/context.ts';
+import { cors, serveStatic } from 'hono/middleware.ts';
 
-import { MODE, PORT, URL } from './config/config';
+import { Config } from '@config/config.ts';
+import { CronMiddleware } from '@middleware/cron.ts';
+import { PdfController } from '@controller/pdf.ts';
 
-import * as AssetMiddleware from './middleware/asset';
-import * as CronMiddleware from './middleware/cron';
-import * as ErrorMiddleware from './middleware/error';
-import * as LogMiddleware from './middleware/log';
-import * as PostMiddleware from './middleware/post';
-import * as SecurityMiddleware from './middleware/security';
+const app = new Hono();
 
-import * as PDFController from './controller/pdf';
-import * as NotFoundController from './controller/not-found';
+CronMiddleware.init();
 
-export let app = express();
-const server = http.createServer(app);
+app.use('/api/*', cors({origin: ['http://localhost:4200']}))
+app.use('/public/*', serveStatic({root: `./public`}));
+app.use('/upload/*', serveStatic({root: `./public`}));
+app.use('/www/*', serveStatic({root: `./www`}));
+app.use('/assets/*', serveStatic({root: `./www`}));
 
-init();
+app.route('/api', PdfController.router);
 
-async function init(): Promise<void> {
-  app.use(SecurityMiddleware.app);
-  app.use(PostMiddleware.app);
-  app.use(AssetMiddleware.app);
-  LogMiddleware.init();
+app.notFound((context: Context) => context.json({status: 404, message: 'Not Found'}, 404));
 
-  CronMiddleware.init();
-
-  app.use(PDFController.router);
-  app.use(NotFoundController.router);
-
-  app.use(ErrorMiddleware.handle);
-
-  server.listen(PORT);
-  console.log(`Server running in ${MODE} mode on port ${PORT} on address ${URL}`);
-  app.emit('initialized');
-}
+Deno.serve({port: Config.PORT}, app.fetch);
+console.log(`Server running in ${Config.MODE} mode on port ${Config.PORT} on address ${Config.URL}`);

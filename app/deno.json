@@ -1,0 +1,20 @@
+{
+  "imports": {
+    "@config/": "./config/",
+    "@controller/": "./controller/",
+    "@middleware/": "./middleware/",
+    "@model/": "./model/",
+    "axios": "npm:axios@1.6.8",
+    "dayjs": "npm:dayjs@1.11.10",
+    "playwright": "npm:playwright@1.43.1",
+    "dayjs/": "npm:/dayjs@1.11.10/",
+    "hono": "https://deno.land/x/hono@v4.2.3/mod.ts",
+    "hono/": "https://deno.land/x/hono@v4.2.3/",
+    "std/": "https://deno.land/std/"
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-namespace"]
+    }
+  }
+}

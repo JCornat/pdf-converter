@@ -2,7 +2,7 @@ import * as fsPromises from 'fs/promises';
 import * as moment from 'moment';
 import * as path from 'path';
 
-import * as Global from './global';
+import * as Global from './global.ts';
 
 export async function removeOldFiles(options: { directory: string, whitelist?: string[], timeUnit: any, timeValue: number }): Promise<void> {
   try {

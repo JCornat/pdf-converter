@@ -1,17 +1,13 @@
-import { CronJob } from 'cron';
+import { Config } from '@config/config.ts';
+import { Pdf } from '@model/pdf.ts';
 
-import { ENABLE_CRON } from '../config/config';
-import * as PDF from '../model/pdf';
-
-export function init(): any {
-  try {
-    if (!ENABLE_CRON) {
+export namespace CronMiddleware {
+  export function init(): void {
+    if (!Config.ENABLE_CRON) {
       return;
     }
 
-    const cron0 = new CronJob('0 * * * * *', PDF.cleaner, null, true, 'Europe/Paris'); // Clean regularly documents
-  } catch (error) {
-    console.error(error);
-    throw error;
+    Deno.cron('Clean generated documents', '* * * * *', Pdf.cleaner)
+      .catch((error) => console.error('CronMiddleware', 'Pdf.cleaner', error));
   }
 }
