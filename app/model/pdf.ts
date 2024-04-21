@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 
 import { time } from '@model/time.ts';
 import { Config } from '@config/config.ts';
-import * as Directory from '@model/directory.ts';
+import { Directory } from '@model/directory.ts';
 import { Global } from '@model/global.ts';
 import { PPdfConvertHtmlContent } from '@model/definition.ts';
 
@@ -52,8 +52,6 @@ export namespace Pdf {
       title = `${currentDate}-${random}.pdf`;
     }
 
-    const destination = path.join(__dirname, '..', 'public', 'pdf', title);
-
     const margin = {
       top: options.margin?.top || 20,
       left: options.margin?.left || 20,
@@ -61,9 +59,9 @@ export namespace Pdf {
       bottom: options.margin?.bottom || 20,
     };
 
-    const resetCSS = fs.readFileSync(path.join(__dirname, '..', 'private', 'reset.css'), 'utf-8');
-    const defaultCSS = fs.readFileSync(path.join(__dirname, '..', 'private', 'default.css'), 'utf-8');
-    const headerCSS = fs.readFileSync(path.join(__dirname, '..', 'private', 'header.css'), 'utf-8');
+    const resetCSS = await Deno.readTextFile(`${Deno.cwd()}/private/reset.css`);
+    const defaultCSS = await Deno.readTextFile(`${Deno.cwd()}/private/default.css`);
+    const headerCSS = await Deno.readTextFile(`${Deno.cwd()}/private/header.css`);
 
     let headerTemplate: string = ' ';
     let footerTemplate: string = ' ';
@@ -99,7 +97,7 @@ export namespace Pdf {
     const landscape = options.landscape || false;
 
     const optionsPDF = {
-      path: destination,
+      path: `${Deno.cwd()}/public/pdf/${title}`,
       format,
       width,
       height,
@@ -127,7 +125,7 @@ export namespace Pdf {
   export async function cleaner(): Promise<void> {
     try {
       const options = {
-        directory: path.join(__dirname, '..', 'public', 'pdf'),
+        directory:  `${Deno.cwd()}/public/pdf`,
         timeUnit: 'hours',
         timeValue: 1,
         whitelist: ['.gitkeep'],

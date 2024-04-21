@@ -5,13 +5,13 @@ import { Pdf } from '@model/pdf.ts';
 export namespace PdfController {
   export const router = new Hono();
 
-  router.get('/api/convert', async (context: Context) => {
+  router.get('/convert', async (context: Context) => {
     const options = Pdf.formatOptions(context.req.query());
     const data = await Pdf.convertHtmlContent(options);
     return context.json(data);
   });
 
-  router.post('/api/convert', async (context: Context) => {
+  router.post('/convert', async (context: Context) => {
     const options = Pdf.formatOptions(context.req.json());
     const data = await Pdf.convertHtmlContent(options);
     return context.json(data);

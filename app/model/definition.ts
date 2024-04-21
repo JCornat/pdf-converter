@@ -3,7 +3,7 @@ export interface PPdfConvertHtmlContent {
   headerTemplate?: string;
   footerTemplate?: string;
   style?: string;
-  format?: string;
+  format?: 'A4';
   landscape?: boolean;
   width?: string | number;
   height?: string | number;
