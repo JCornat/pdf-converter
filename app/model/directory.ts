@@ -1,13 +1,13 @@
-import * as fsPromises from 'fs/promises';
-import * as moment from 'moment';
-import * as path from 'path';
+import fsPromises from 'node:fs/promises';
+import moment from 'moment';
+import path from 'node:path';
 
 import * as Global from './global';
 
 export async function removeOldFiles(options: { directory: string, whitelist?: string[], timeUnit: any, timeValue: number }): Promise<void> {
   try {
     if (Global.isEmpty(options) || Global.isEmpty(options.directory) || Global.isEmpty(options.timeUnit) || Global.isNaN(options.timeValue)) {
-      throw {status: 400, message: 'Paramètres invalides'};
+      throw { status: 400, message: 'Paramètres invalides' };
     }
 
     if (Global.isEmpty(options.whitelist)) {

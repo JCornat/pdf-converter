@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2017",
+    "module": "nodenext",
     "noImplicitAny": false,
-    "sourceMap": true
-  },
-  "exclude": [
-    "node_modules"
-  ]
+    "sourceMap": false,
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  }
 }

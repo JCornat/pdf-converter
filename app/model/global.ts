@@ -14,9 +14,7 @@ export function capitalize(arg: string): string {
 
   const text = arg.trim()
     .toLowerCase()
-    .replace(/\b(\w)/g, (letter) => {
-      return letter.toUpperCase();
-    });
+    .replace(/\b(\w)/g, (letter) => letter.toUpperCase());
 
   return text;
 }
@@ -329,7 +327,7 @@ export function get(data: { [key: string]: any }, stringPath: string): any {
 }
 
 export function sleep(milliseconds: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, milliseconds));
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 export function formatText(data: string): string {

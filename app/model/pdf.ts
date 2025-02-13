@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
-import * as fs from 'fs';
-import * as moment from 'moment';
-import * as path from 'path';
+import fs from 'node:fs';
+import moment from 'moment';
+import path from 'node:path';
 
 import { URL } from '../config/config';
 import * as Directory from './directory';
@@ -13,7 +13,7 @@ export function randomInteger(min: number = 100000, max: number = 999999): numbe
 
 export async function convertHtmlContentToPDF(options: { content: string, headerTemplate?: string, footerTemplate?: string, style?: string, format?: string, landscape?: boolean, width?: string | number, height?: string | number, margin?: { top?: string | number, left?: string | number, right?: string | number, bottom?: string | number }, filename?: string }): Promise<string> {
   if (Global.isEmpty(options?.content)) {
-    throw {status: 400, message: `Empty content cannot be empty`};
+    throw { status: 400, message: `Empty content cannot be empty` };
   }
 
   const browser = await chromium.launch();
@@ -89,13 +89,13 @@ export async function convertHtmlContentToPDF(options: { content: string, header
     footerTemplate,
   };
 
-  await page.addStyleTag({content: `${resetCSS}${defaultCSS}`});
+  await page.addStyleTag({ content: `${resetCSS}${defaultCSS}` });
 
   if (Global.isPopulated(options.style)) {
-    await page.addStyleTag({content: options.style});
+    await page.addStyleTag({ content: options.style });
   }
 
-  await page.emulateMedia({media: 'screen'});
+  await page.emulateMedia({ media: 'screen' });
   await page.pdf(optionsPDF);
   await browser.close();
 

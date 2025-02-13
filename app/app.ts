@@ -1,5 +1,4 @@
-import * as express from 'express';
-import * as http from 'http';
+import express, { Express } from 'express';
 
 import { MODE, PORT, URL } from './config/config';
 
@@ -13,12 +12,12 @@ import * as SecurityMiddleware from './middleware/security';
 import * as PDFController from './controller/pdf';
 import * as NotFoundController from './controller/not-found';
 
-export let app = express();
-const server = http.createServer(app);
+if (require.main === module) {
+  init();
+}
 
-init();
-
-async function init(): Promise<void> {
+async function init(): Promise<Express> {
+  const app = express();
   app.use(SecurityMiddleware.app);
   app.use(PostMiddleware.app);
   app.use(AssetMiddleware.app);
@@ -31,7 +30,8 @@ async function init(): Promise<void> {
 
   app.use(ErrorMiddleware.handle);
 
-  server.listen(PORT);
+  app.listen(PORT);
   console.log(`Server running in ${MODE} mode on port ${PORT} on address ${URL}`);
-  app.emit('initialized');
+
+  return app;
 }
