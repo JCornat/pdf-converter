@@ -9,7 +9,7 @@ export function init(): any {
       return;
     }
 
-    const cron0 = new CronJob('0 * * * * *', PDF.cleaner, null, true, 'Europe/Paris'); // Clean regularly documents
+    const cron0 = new CronJob('* * * * *', PDF.cleaner, null, true, 'Europe/Paris'); // Clean regularly documents
   } catch (error) {
     console.error(error);
     throw error;
