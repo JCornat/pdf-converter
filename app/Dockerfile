@@ -15,7 +15,7 @@ RUN apt purge -y nodejs && \
     apt update && \
     apt install -y nodejs && \
     npm install && \
-    npx playwright install --with-deps chromium && \
+    npx playwright install --with-deps chromium
 
 # Compile files and launch server
 CMD npx tsc && \
